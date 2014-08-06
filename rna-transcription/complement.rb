@@ -1,6 +1,6 @@
 class Complement
-    DNA = "GCTA"
-    RNA = "CGAU"
+  DNA = "GCTA"
+  RNA = "CGAU"
   
   def self.of_dna(dna_strand)
     dna_strand.tr(DNA,RNA)
