@@ -3,12 +3,9 @@ class Raindrops
   def self.convert(number)
     found = "" 
     convert = {3 => "Pling", 5 => "Plang", 7 => "Plong"}
+    convert.default=""
     factors = Prime.prime_division(number)
-    factors.each do |factor|
-      if convert.key?(factor[0])
-       found << convert[factor[0]]
-      end
-    end
+    factors.each { |factor,_| found << convert[factor] }
     if found.length > 0
       puts found
       return found
