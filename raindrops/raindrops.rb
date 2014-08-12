@@ -6,12 +6,6 @@ class Raindrops
     convert.default=""
     factors = Prime.prime_division(number)
     factors.each { |factor,_| found << convert[factor] }
-    if found.length > 0
-      puts found
-      return found
-    else
-      puts number.to_s
-      number.to_s
-    end
+    found.empty? ? number.to_s : found
   end
 end
