@@ -5,6 +5,6 @@ class Grains
   end
   
   def total
-    (0..63).inject(0){ |sum, x| sum += 2**x }
+    2**64 - 1
   end
 end
