@@ -1,7 +1,5 @@
 class Array
   def accumulate
-    result = []
-    self.each { |element| result << yield(element) }
-    result
+    self.each_with_object([]) { |element, array| array << yield(element) }
   end
 end
