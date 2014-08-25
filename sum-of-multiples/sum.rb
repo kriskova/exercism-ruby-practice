@@ -1,17 +1,18 @@
 class SumOfMultiples 
+  def initialize(*args)
+    @multipliers = *args
+  end
 
-  @@multipliers = [3,5]
 
-  def self.new(*args)
-    raise "No arguments given..I need some!" if  args.nil? || args.empty?
-    @@multipliers = args 
-    SumOfMultiples
+  def to(upto)
+    (0..upto-1).select{|num| multiple? num }.inject(:+)
   end
 
   def self.to(upto)
-    multis = (0..upto-1).select{|num| @@multipliers.any?{|multi| num % multi == 0}}
-    @@multipliers = [3,5]
-    multis.inject{|sum, number| sum += number}
+    new(3, 5).to(upto)
   end
   
+  def multiple?(number)
+    @multipliers.any?{|multi| number % multi == 0}
+  end
 end
