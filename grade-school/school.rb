@@ -1,23 +1,18 @@
 class School
   def initialize
-   @school = {} 
+    @grades = Hash.new {|this, grade| this[grade] = []}
   end
 
   def to_hash
-    result = {}
-    @school.each_pair do |name, grade|
-      result[grade] ||= []
-      result[grade].push(name).sort!
-    end
-    Hash[result.sort]
+    Hash[@grades.sort]
   end
 
   def add (name, grade)
-    @school[name] = grade
+    @grades[grade].push(name).sort!
   end
 
   def grade(num)
-    @school.select{|name, grade| grade == num}.map{|name, grade| name }.sort
+    @grades[num].sort
   end
 
 end
