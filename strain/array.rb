@@ -1,4 +1,4 @@
-class Array
+module Strainable
   def keep
     self.each_with_object([]){|el, result| result << el if yield el}
   end
@@ -6,5 +6,8 @@ class Array
   def discard
     self.each_with_object([]){|el, result| result << el unless yield el}
   end
-  
+end
+
+class Array
+  include Strainable
 end
