@@ -1,4 +1,3 @@
-require 'pry'
 class ETL
   def self.transform(values)
     values.each_with_object(Hash.new) do |(key, value), result|
