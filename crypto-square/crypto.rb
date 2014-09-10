@@ -17,7 +17,7 @@ class Crypto
   end
 
   def ciphertext
-    plaintext_segments.map{|x| unify(x)}.transpose.join
+    plaintext_segments.map{|x| fit_to_size(x)}.transpose.join.gsub(/\W/,'')
   end
 
 
@@ -27,9 +27,7 @@ class Crypto
 
   private
 
-  def unify(string)
-    result = string.chars
-    result.concat(Array.new(size() - string.size)) unless size() == string.size
-    result
+  def fit_to_size(string)
+    string.ljust(size()).chars
   end
 end
