@@ -39,16 +39,23 @@ class Say
   end
 
   def in_english
+    raise ArgumentError unless (0..999_999_999_999).include?(@num)
+    return "zero" if @num == 0
+    
+    results = []
     chunks = chunk_to_thousands(@num)
-    chunks.inject("") do |result, part|
-      result << translate_part(part.to_i * position_value(part, chunks))
+    chunks.each_with_index do |part, index|
+      unless part.to_i.zero?
+        results.push(translate_part(part.to_i * position_value(index, chunks)))
+      end
     end
+    results.join(" ")
   end
 
   private
 
-  def position_value(part, array)
-    10 ** (array.length - array.index(part) + 1)
+  def position_value(index, array)
+    1000 ** (array.length - (index + 1))
   end
 
   def chunk_to_thousands(num)
@@ -56,31 +63,29 @@ class Say
   end
 
   def translate_part(num)
-    return "zero" if num == 0
-
     remaining = num
     previous_element = 0
-    VALUES.inject("") do |result, (key, value)|
-      if remaining >= key
-        counter = remaining / key
+    VALUES.inject("") do |result, (num_i, num_s)|
+      if remaining >= num_i
+        counter = remaining / num_i
         
         case
-        when key >= 100
+        when num_i >= 100
           result << " " unless result.empty?
-          result << "#{VALUES[counter]} #{value}"
-        when key.between?(10,99)
+          result << "#{Say.new(counter).in_english} #{num_s}"
+        when num_i.between?(10,99)
           result << " " unless result.empty?
-          result << value
-        when key < 10
+          result << num_s
+        when num_i < 10
           if previous_element >= 100
             result << " "
           else
             result << "-" unless result.empty?
           end
-          result << value
+          result << num_s
         end
-        remaining = remaining - counter * key
-        previous_element = key
+        remaining = remaining - counter * num_i
+        previous_element = num_i
       end
       result
     end

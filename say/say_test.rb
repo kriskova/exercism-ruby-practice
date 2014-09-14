@@ -69,14 +69,12 @@ class SayTest < MiniTest::Unit::TestCase
   end
 
   def test_lower_bound
-    skip
     assert_raises ArgumentError do
       Say.new(-1).in_english
     end
   end
 
   def test_upper_bound
-    skip
     assert_raises ArgumentError do
       Say.new(1000000000000).in_english
     end
