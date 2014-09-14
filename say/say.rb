@@ -43,8 +43,7 @@ class Say
     return "zero" if @num == 0
     
     results = []
-    chunks = chunk_to_thousands(@num)
-    chunks.reverse.each_with_index do |part, index|
+    chunk_to_thousands(@num).reverse.each_with_index do |part, index|
       unless part.to_i.zero?
         results << translate_part(part.to_i * 1000 ** index)
       end
@@ -53,10 +52,6 @@ class Say
   end
 
   private
-
-  def position_value(index, array)
-    1000 ** (array.length - (index + 1))
-  end
 
   def chunk_to_thousands(num)
     num.to_s.chars.reverse.each_slice(3).map(&:reverse).map(&:join).reverse
