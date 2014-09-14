@@ -44,12 +44,12 @@ class Say
     
     results = []
     chunks = chunk_to_thousands(@num)
-    chunks.each_with_index do |part, index|
+    chunks.reverse.each_with_index do |part, index|
       unless part.to_i.zero?
-        results.push(translate_part(part.to_i * position_value(index, chunks)))
+        results << translate_part(part.to_i * 1000 ** index)
       end
     end
-    results.join(" ")
+    results.reverse.join(" ")
   end
 
   private
