@@ -13,7 +13,7 @@ class Nucleotide
   end
 
   def count(nucleotide)
-    @dna.chars.inject(0){|sum, curr_nuc| sum +=1 if curr_nuc == nucleotide; sum}
+    @dna.chars.count(nucleotide)
   end
 
   def histogram
