@@ -1,36 +1,30 @@
 class Queens
   attr_reader :white, :black
 
-  def initialize(*args)
-    @white = args.empty? ? [0, 3] : args[0][:white]
-    @black = args.empty? ? [7, 3] : args[0][:black]
+  def initialize(white: [0, 3], black: [7, 3])
+    @white = white
+    @black = black
 
     raise ArgumentError if @white == @black
   end
 
   def to_s
-    table = ""
-    8.times do |x|
-      8.times do |y|
-        case
-        when [x,y] == @white then table << "W "
-        when [x,y] == @black then table << "B "
-        else table << "O "
-        end
-      end
-      table.strip! << "\n"
-    end
-    table.chomp
+    8.times.map{|x| 8.times.map{|y| symbol_for_pos(x,y)}.join(" ")}.join("\n")
   end
 
   def attack?
-    return true if same_row?
-    return true if same_column?
-    return true if same_diagonal?
-    false
+    same_row? || same_column? || same_diagonal?
   end
 
   private
+
+  def symbol_for_pos(x,y)
+    case
+    when [x,y] == @white then "W"
+    when [x,y] == @black then "B"
+    else "O"
+    end
+  end
 
   def same_row?
     @white[0] == @black[0]
