@@ -1,4 +1,3 @@
-require 'pry'
 class Matrix
   def initialize(string)
     @matrix = string.split("\n").map{|x| x.split(" ").map(&:to_i)}
