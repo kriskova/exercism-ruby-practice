@@ -1,6 +1,6 @@
 class Matrix
   def initialize(string)
-    @matrix = string.split("\n").map{ |s| s.split(" ").map(&:to_i) }
+    @matrix = string.lines.map{ |line| line.split.map(&:to_i) }
   end
   
   def rows
