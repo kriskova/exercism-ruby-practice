@@ -7,12 +7,12 @@ class Triangle
   end
 
   def kind
-    result = @sides.each_with_object(Hash.new(0)) {|side, sum| sum[side] += 1}
 
-    return :equilateral if result.values.include?(3)
-    return :isosceles if result.values.include?(2)
-
-    :scalene
+    case @sides.uniq.count
+    when 3 then :scalene
+    when 2 then :isosceles
+    when 1 then :equilateral
+    end
   end
 
   private
