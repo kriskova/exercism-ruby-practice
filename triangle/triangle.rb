@@ -7,7 +7,6 @@ class Triangle
   end
 
   def kind
-
     case @sides.uniq.count
     when 3 then :scalene
     when 2 then :isosceles
