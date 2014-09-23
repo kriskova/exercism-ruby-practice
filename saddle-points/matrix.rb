@@ -17,6 +17,8 @@ class Matrix
     end
   end
 
+  private
+
   def saddle_point?(x,y)
     element = rows[x][y]
     element == rows[x].max && element == columns[y].min
