@@ -5,11 +5,9 @@ class Proverb
 
   def to_s
     result = ""
-    words = @words.clone
     rhyme = @words.first
-    (0..@words.size - 2).step do
-      result << "For want of a #{words[0]} the #{words[1]} was lost.\n"
-      words.shift
+    @words.each_cons(2) do |word_1, word_2|
+      result << "For want of a #{word_1} the #{word_2} was lost.\n"
     end
     result << "And all for the want of a #{@qualifier + rhyme}."
   end
