@@ -20,12 +20,7 @@ class Element
   end
 
   def self.from_a(args)
-    prev = nil
-    args.to_a.reverse.each do |x|
-      current = Element.new(x, prev)
-      prev = current
-    end
-    prev
+    args.to_a.reverse.inject(nil){ |prev, x| Element.new(x, prev) }
   end
 
   private
