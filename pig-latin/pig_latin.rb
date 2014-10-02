@@ -10,7 +10,7 @@ class PigLatin
     if word.match(/^[aeiou]|^yt|^xr/)
       word + "ay"
     else
-      rotate_until_vowel(word)
+      rotate_until_vowel(word) + "ay"
     end
   end
 
@@ -24,6 +24,6 @@ class PigLatin
       word = word.chars.rotate(rotation).join
       rotation = 1
     end
-    word + "ay"
+    word
   end
 end
