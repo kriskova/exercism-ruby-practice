@@ -1,12 +1,15 @@
 class OCR
 
+  DIGIT_HEIGHT = 4
+  DIGIT_WIDTH = 3
+
   def initialize(text)
     @text = text.gsub(/[^|_\s]/,"")
   end
   
   def convert
     results = []
-    @text.lines.each_slice(4) do |digit_line|
+    @text.lines.each_slice(DIGIT_HEIGHT) do |digit_line|
       results << convert_one_digit_line(digit_line)
     end
     results.join(",")
@@ -17,7 +20,7 @@ class OCR
       def convert_one_digit_line(lines)
         digits = []
         lines.each do |line|
-          line.chomp.chars.each_slice(3).with_index do |slice, i|
+          line.chomp.chars.each_slice(DIGIT_WIDTH).with_index do |slice, i|
             digits[i] = (digits[i] || []) + slice
           end
         end
