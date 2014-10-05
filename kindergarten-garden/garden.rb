@@ -22,6 +22,8 @@ class Garden
               :larry
   ]
 
+  CUPS_PER_ROW = 2
+
   def initialize(cups, children=CHILDREN)
     @cups = cups
     @children = generate_children_hash(children)
@@ -47,7 +49,7 @@ class Garden
 
   def process_diagram
     @cups.lines.each do |line|
-      line.chomp.chars.each_slice(2).with_index do |slice, i|
+      line.chomp.chars.each_slice(CUPS_PER_ROW).with_index do |slice, i|
         slice.each{|plant| @children[@children.keys[i]] << PLANTS[plant]}
       end
     end
