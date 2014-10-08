@@ -6,7 +6,7 @@ class Triplet
     sum = options[:sum]
     range = min_factor..max_factor
 
-    search_triplets(range, range, range, sum)
+    search_triplets(range, sum)
   end
 
   attr_reader :a, :b, :c
@@ -35,14 +35,10 @@ class Triplet
 
   private
 
-  def self.search_triplets(range_a, range_b, range_c, sum)
-    range_a.each_with_object([])  do |a, result|
-      range_b.step do |b|
-        range_c.step do |c|
-          temp = Triplet.new(a, b, c)
-          result << temp if fits_requirements?(temp, result, sum)
-        end
-      end
+  def self.search_triplets(range, sum)
+    range.to_a.repeated_permutation(3).each_with_object([]) do |(a,b,c), result|
+      temp = Triplet.new(a, b, c)
+      result << temp if fits_requirements?(temp, result, sum)
     end
   end
 
