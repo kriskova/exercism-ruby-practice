@@ -6,7 +6,7 @@ class Robot
   Position = Struct.new(:x, :y)
 
   def initialize()
-    @bearing = :north  
+    @bearing = :north
     @coordinates = Position.new(0, 0)
   end
 
@@ -19,6 +19,7 @@ class Robot
   def at(x, y)
     @coordinates.x = x
     @coordinates.y = y
+    self
   end
 
   def coordinates
@@ -70,9 +71,8 @@ class Simulator
     string.chars.inject([]){|commands, char| commands << COMMANDS[char]}
   end
 
-  def place(robot, args={})
-    robot.at(args[:x], args[:y])
-    robot.orient(args[:direction])
+  def place(robot, x: 0,  y: 0, direction: :north)
+    robot.at(x, y).orient(direction)
   end
 
   def evaluate(robot, commands)
