@@ -13,8 +13,8 @@ class Board
     validate_board(board)
 
     board.each_with_index do |row, r|
-      row.chars.each_with_index do |item, i|
-        board[r][i] = count_neighbors(board, r, i) if item == " "
+      row.chars.each_with_index do |cell, c|
+        board[r][c] = count_neighbors(board,r,c).to_s.tr("0"," ") if cell == " "
       end
     end
   end
@@ -40,30 +40,21 @@ class Board
   end
 
   def self.count_neighbors(board, row, pos)
-    counter = 0
-    counter += 1 if board[row - 1][pos] == "*"
-    counter += 1 if board[row - 1][pos - 1] == "*"
-    counter += 1 if board[row - 1][pos + 1] == "*"
-    counter += 1 if board[row + 1][pos] == "*"
-    counter += 1 if board[row + 1][pos - 1] == "*"
-    counter += 1 if board[row + 1][pos + 1] == "*"
-    counter += 1 if board[row][pos - 1] == "*"
-    counter += 1 if board[row][pos + 1] == "*"
-    return " " if counter.zero?
-    counter.to_s
-    #NEIGHBORS.inject(0) {|sum, cell| sum += mine_at(cell, board, row, pos)}
+    NEIGHBORS.inject(0) do |sum, direction|
+      mine_at?(direction, board, row, pos) ? sum + 1 : sum
+    end
   end
 
-  def self.mine_at(direction, board, row, pos)
+  def self.mine_at?(direction, board, row, pos)
     case direction
-    when :left then board[row][pos - 1] == "*" ? 1 : 0
-    when :right then board[row][pos + 1] == "*" ? 1 : 0
-    when :top_left then board[row - 1][pos - 1] == "*" ? 1 : 0
-    when :top then board[row - 1][pos] == "*" ? 1 : 0
-    when :top_right then board[row - 1][pos + 1] == "*" ? 1 : 0
-    when :bottom_left then board[row + 1][pos - 1] == "*" ? 1 : 0
-    when :bottom then board[row + 1][pos] == "*" ? 1 : 0
-    when :bottom_right then board[row + 1][pos + 1] == "*" ? 1 : 0
+    when :left then board[row][pos - 1] == "*" 
+    when :right then board[row][pos + 1] == "*"
+    when :top_left then board[row - 1][pos - 1] == "*"
+    when :top then board[row - 1][pos] == "*"
+    when :top_right then board[row - 1][pos + 1] == "*"
+    when :bottom_left then board[row + 1][pos - 1] == "*"
+    when :bottom then board[row + 1][pos] == "*"
+    when :bottom_right then board[row + 1][pos + 1] == "*"
     end
   end
 
