@@ -1,39 +1,36 @@
-require 'pry'
 class BinarySearch
   attr_reader :list
 
-  def initialize(list)
+  def initialize(list, offset=0)
     raise ArgumentError if list != list.sort
     @list = list 
-    @temp_list = list
-    @pos = 0
+    @offset = offset
   end
 
   def search_for(item)
-    @temp_list = @list
-    @pos = 0
-    raise RuntimeError if !@temp_list.include?(item)
+    raise RuntimeError if @list.empty?
 
-    search(item)
+    if @list[middle] == item
+      return @offset + middle
+    elsif @list[middle] < item
+      @offset += middle + 1
+      self.class.new(list_after_middle, @offset).search_for(item)
+    else
+      self.class.new(list_before_middle, @offset).search_for(item)
+    end
   end
 
   def middle
-    @temp_list.size / 2
+    @list.size / 2
   end
 
   private
 
-  def search(item)
-    if @temp_list[middle] == item
-      return @pos + middle
-    elsif @temp_list[middle] < item
-      @pos += middle + 1
-      @temp_list = @temp_list.drop(middle+1)
-      search(item)
-    else
-      @temp_list = @temp_list.take(middle)
-      search(item)
-    end
+  def list_before_middle
+    @list[0..middle-1]
+  end
 
+  def list_after_middle
+    @list[(middle + 1)..-1]
   end
 end
