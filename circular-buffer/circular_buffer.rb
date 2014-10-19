@@ -15,15 +15,15 @@ class CircularBuffer
 
   def write(item)
     raise BufferFullException if @buffer.size == @size
-    @buffer.push(item) unless item.nil?
+    @buffer << item unless item.nil?
   end
 
   def write!(item)
-    @buffer.push(item)
+    @buffer << item
     @buffer.shift
   end
 
   def clear
-    @buffer = []
+    @buffer.clear
   end
 end
