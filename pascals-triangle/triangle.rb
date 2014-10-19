@@ -8,9 +8,7 @@ class Triangle
   private
 
   def generate_rows(size)
-    (0..size-1).inject([]) do |result, num|
-      result << row(num)
-    end
+    (0..size-1).map {|num| row(num)}
   end
 
   def row(num)
