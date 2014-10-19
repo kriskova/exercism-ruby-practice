@@ -8,7 +8,7 @@ class Series
   end
 
   def slices(num)
-    digits.each_cons(num).inject([]){|sum, slice| sum << slice}
+    digits.each_cons(num).to_a
   end
 
   def largest_product(num)
