@@ -31,7 +31,6 @@ class TwelveDaysSong
   }
 
   def initialize()
-    
   end
 
   def verse(num)
@@ -43,7 +42,7 @@ class TwelveDaysSong
   end
 
   def sing
-    verses(1,12)
+    verses(*NUMS.keys.minmax)
   end
 
   private
