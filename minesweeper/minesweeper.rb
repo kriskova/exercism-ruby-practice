@@ -40,9 +40,7 @@ class Board
   end
 
   def self.count_neighbors(board, row, pos)
-    NEIGHBORS.inject(0) do |sum, direction|
-      mine_at?(direction, board, row, pos) ? sum + 1 : sum
-    end
+    NEIGHBORS.count {|direction| mine_at?(direction, board, row, pos)}
   end
 
   def self.mine_at?(direction, board, row, pos)
