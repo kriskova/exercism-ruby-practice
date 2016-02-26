@@ -2,7 +2,7 @@ class CustomSet
   attr_reader :items
 
   def initialize(items=[])
-    @items = items.to_a.sort
+    @items = items.to_a.uniq.sort
   end
 
   def ==(other_set)
