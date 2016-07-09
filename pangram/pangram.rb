@@ -13,4 +13,6 @@ class Pangram
   def self.chars_in_sentence(sentence)
     sentence.scan(/\w/)
   end
+  private_class_method :chars_in_sentence
+
 end
