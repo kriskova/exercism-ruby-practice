@@ -1,3 +1,5 @@
+require 'byebug'
+
 module BookKeeping
   VERSION = 1
 end
@@ -9,21 +11,15 @@ class Game
     @frames = [Frame.new]
   end
 
-  def roll(num)
-    raise 'Pins must have a value from 0 to 10' unless (0..10).cover? num
-    raise 'Pin count exceeds pins on the lane' unless (0..10).cover?(current_frame.score + num) || last_frame?
-    raise 'Pin count exceeds pins on the lane' if last_frame? && (current_frame.score + num) > 20 && current_frame.score != 20
+  def roll(pins)
+    raise 'Pins must have a value from 0 to 10' unless (0..10).cover? pins
     raise 'Should not be able to roll after game is over' if finished?
 
-    current_frame.roll(num)
+    current_frame.roll(pins)
 
-    if previous_frame && !extra_ball?
-      previous_frame.add_score(num) if previous_frame.strike?
-      previous_frame.add_score(num) if previous_frame.spare? && current_frame.first_roll?
-      frames[-3].add_score(num) if multiple_strikes?
-    end
+    add_extra_scores(pins)
 
-    frames.push(Frame.new) if current_frame.finished? && !last_frame?
+    start_new_frame if current_frame.finished? && !last_frame?
   end
 
   def score
@@ -42,20 +38,41 @@ class Game
     frames[-2]
   end
 
+  def frame_before_previous
+    frames[-3]
+  end
+
   def last_frame?
     frames.size == 10
   end
 
-  def extra_ball?
-    last_frame? && current_frame.fill_ball?
-  end
-
   def multiple_strikes?
-    frames[-3] && frames[-3].strike? && previous_frame.strike? && current_frame.first_roll?
+    frame_before_previous && frame_before_previous.strike? && previous_frame.strike?
   end
 
   def finished?
-    last_frame? && ((current_frame.score < 10 && current_frame.rolls == 2) || current_frame.rolls == 3 )
+    last_frame? && current_frame.finished?
+  end
+
+  def start_new_frame
+    new_frame = last_frame_next? ? TenthFrame.new : Frame.new
+
+    frames.push(new_frame) 
+  end
+
+  def last_frame_next?
+    frames.size == 9
+  end
+
+  def add_extra_scores(pins)
+    return unless previous_frame && !current_frame.fill_ball?
+
+    previous_frame.add_score(pins) if previous_frame.strike?
+
+    return unless current_frame.first_roll?
+
+    previous_frame.add_score(pins) if previous_frame.spare?
+    frame_before_previous.add_score(pins) if multiple_strikes?
   end
 end
 
@@ -70,13 +87,15 @@ class Frame
     @rolls = 0
   end
 
-  def roll(num)
+  def roll(pins)
+    raise 'Pin count exceeds pins on the lane' unless (0..10).cover?(score + pins)
+
     @rolls += 1
-    @score += num
+    @score += pins
   end
 
-  def add_score(num)
-    @score += num
+  def add_score(pins)
+    @score += pins
   end
 
   def first_roll?
@@ -84,7 +103,7 @@ class Frame
   end
 
   def fill_ball?
-    @rolls == 3 || @rolls == 2 && score == 10
+    false
   end
 
   def finished?
@@ -97,5 +116,25 @@ class Frame
 
   def spare?
     rolls == 2 && score >= MAX_POINTS
+  end
+end
+
+class TenthFrame < Frame
+  MAX_POINTS = 30
+  MAX_ROLLS = 3
+
+  def roll(pins)
+    raise 'Pin count exceeds pins on the lane' if (score + pins) > 20 && score != 20
+    
+    @rolls += 1
+    @score += pins
+  end
+
+  def fill_ball?
+    @rolls == MAX_ROLLS 
+  end
+
+  def finished?
+    (score < 10 && rolls == 2) || rolls == MAX_ROLLS
   end
 end
